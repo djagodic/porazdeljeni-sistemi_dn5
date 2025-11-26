@@ -42,11 +42,11 @@ func main() {
 
 			// Inicializacija podatkov
 			studenti := make(map[string]redovalnica.Student)
-			studenti["1003"] = redovalnica.Student{"David", "Jagodič", []int{9, 10, 10, 10, 9, 9, 10}}
-			studenti["1004"] = redovalnica.Student{"Tilen", "Goršek", []int{8, 10, 9, 7, 8, 10}}
-			studenti["1005"] = redovalnica.Student{"Tim", "Lipnik", []int{5, 7, 6, 8, 8, 6}}
-			studenti["1001"] = redovalnica.Student{"Jaka", "Furlan", []int{10, 10, 10, 9}}
-			studenti["1002"] = redovalnica.Student{"Fedja", "Močnik", []int{10, 9, 10, 7, 8}}
+			studenti["1003"] = redovalnica.Student{Ime: "David", Priimek: "Jagodič", Ocene: []int{9, 10, 10, 10, 9, 9, 10}}
+			studenti["1004"] = redovalnica.Student{Ime: "Tilen", Priimek: "Goršek", Ocene: []int{8, 10, 9, 7, 8, 10}}
+			studenti["1005"] = redovalnica.Student{Ime: "Tim", Priimek: "Lipnik", Ocene: []int{5, 7, 6, 8, 8, 6}}
+			studenti["1001"] = redovalnica.Student{Ime: "Jaka", Priimek: "Furlan", Ocene: []int{10, 10, 10, 9}}
+			studenti["1002"] = redovalnica.Student{Ime: "Fedja", Priimek: "Močnik", Ocene: []int{10, 9, 10, 7, 8}}
 
 			// Prikažemo parametre
 			fmt.Println("Uporabljene nastavitve:")
@@ -56,14 +56,14 @@ func main() {
 			fmt.Println()
 
 			// Primer uporabe DodajOceno
-			redovalnica.DodajOceno(studenti, "1003", maxOcena)
+			redovalnica.DodajOceno(studenti, "1003", minOcena + (maxOcena - minOcena)/2, minOcena, maxOcena)
 
 			// Izpis vseh ocen
-			redovalnica.IzpisVsehOcen(studenti)
+			redovalnica.IzpisRedovalnice(studenti)
 			fmt.Println()
 
 			// Izpis končnega uspeha
-			redovalnica.IzpisiKoncniUspeh(studenti)
+			redovalnica.IzpisiKoncniUspeh(studenti, stOcen)
 			fmt.Println()
 
 			return nil

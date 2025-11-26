@@ -1,4 +1,4 @@
-// Package redovalnica provides a simulated grades storage.
+// Package redovalnica provides a simulated storage for students grades.
 //
 // Example usage:
 //
@@ -44,14 +44,14 @@ func DodajOceno(studenti map[string]Student, vpisnaStevilka string, ocena, min, 
 	//studenti[vpisnaStevilka].ocene = append(studenti[vpisnaStevilka].ocene, ocena)
 }
 
-func povprecje(studenti map[string]Student, vpisnaStevilka string) float64 {
+func povprecje(studenti map[string]Student, vpisnaStevilka string, stOcen int) float64 {
 	student, ok := studenti[vpisnaStevilka]
 
 	if !ok {
 		return -1.0
 	}
 
-	if len(student.Ocene) < 6 {
+	if len(student.Ocene) < stOcen {
 		return 0.0
 	}
 	
@@ -73,10 +73,10 @@ func IzpisRedovalnice(studenti map[string]Student) {
 
 }
 
-func IzpisiKoncniUspeh(studenti map[string]Student) {
+func IzpisiKoncniUspeh(studenti map[string]Student, stOcen int) {
 	for studentKey := range(studenti) {
-		povpr := povprecje(studenti, studentKey)
-		fmt.Printf("%s %s: povprečna ocena %.1f ->", studenti[studentKey].Ime, studenti[studentKey].Priimek, povpr)
+		povpr := povprecje(studenti, studentKey, stOcen)
+		fmt.Printf("%s %s: povprečna ocena %.1f -> ", studenti[studentKey].Ime, studenti[studentKey].Priimek, povpr)
 
 		if povpr >= 9 {
 			fmt.Println("Odličen študent!")
