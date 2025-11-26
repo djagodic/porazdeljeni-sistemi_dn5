@@ -1,3 +1,15 @@
+// Package redovalnica provides a simulated grades storage.
+//
+// Example usage:
+//
+// 	var slovar = make(map[string]redovalnica.Student)
+// 	slovar["1234"] = redovalnica.Student{"Name", "Surname", []int{1, 5, ...}}
+//
+// redovalnica.DodajOceno(slovar, "1234", 10)
+//
+// redovalnica.izpisRedovalnice(slovar)
+//
+// redovalnica.izpisiKoncniUspeh(slovar)
 package redovalnica
 
 import (
@@ -5,13 +17,13 @@ import (
 )
 
 type Student struct {
-	ime     string
-	priimek string
-	ocene   []int
+	Ime     string
+	Priimek string
+	Ocene   []int
 }
 
-func DodajOceno(studenti map[string]Student, vpisnaStevilka string, ocena int) {
-	if ocena < 1 || ocena > 10 {
+func DodajOceno(studenti map[string]Student, vpisnaStevilka string, ocena, min, max int) {
+	if ocena < min || ocena > max {
 		fmt.Println("Ocena ni v ustreznem območju")
 		return
 	}
@@ -25,7 +37,7 @@ func DodajOceno(studenti map[string]Student, vpisnaStevilka string, ocena int) {
 	}
 
 	//moramo ga zapisati nazaj v slovar
-	student.ocene = append(student.ocene, ocena)
+	student.Ocene = append(student.Ocene, ocena)
 	studenti[vpisnaStevilka] = student
 
 	// ne gre, go tegale ne dovoli -> šlo bi, če bi imel v štartu kazalce na študente v slovarju.....kompliciranje
@@ -39,24 +51,24 @@ func povprecje(studenti map[string]Student, vpisnaStevilka string) float64 {
 		return -1.0
 	}
 
-	if len(student.ocene) < 6 {
+	if len(student.Ocene) < 6 {
 		return 0.0
 	}
 	
 	vsota := 0
-	for _, o := range(student.ocene) {
+	for _, o := range(student.Ocene) {
 		vsota += o
 		//fmt.Println(o)
 	}
 
-	return float64(vsota/len(student.ocene))
+	return float64(vsota) / float64(len(student.Ocene))
 }
 
 func IzpisRedovalnice(studenti map[string]Student) {
 	fmt.Println("REDOVALNICA")
 
 	for studentKey := range(studenti) {
-		fmt.Printf("%s - %s %s: %v\n", studentKey, studenti[studentKey].ime, studenti[studentKey].priimek, studenti[studentKey].ocene)
+		fmt.Printf("%s - %s %s: %v\n", studentKey, studenti[studentKey].Ime, studenti[studentKey].Priimek, studenti[studentKey].Ocene)
 	}
 
 }
@@ -64,7 +76,7 @@ func IzpisRedovalnice(studenti map[string]Student) {
 func IzpisiKoncniUspeh(studenti map[string]Student) {
 	for studentKey := range(studenti) {
 		povpr := povprecje(studenti, studentKey)
-		fmt.Printf("%s %s: povprečna ocena %.1f ->", studenti[studentKey].ime, studenti[studentKey].priimek, povpr)
+		fmt.Printf("%s %s: povprečna ocena %.1f ->", studenti[studentKey].Ime, studenti[studentKey].Priimek, povpr)
 
 		if povpr >= 9 {
 			fmt.Println("Odličen študent!")
